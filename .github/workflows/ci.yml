@@ -61,7 +61,7 @@ jobs:
       - name: write out license file 2019
         if: ${{ contains(matrix.unity-version-matrix,'2019') }}
         run: |
-          echo -n -e "$LICENSE_2019" > license.alf
+          echo -n -e "$LICENSE2019" > license.alf
           echo inside a multi-line script: $LICENSE_2019
           wc -m license.alf
           ls -al *alf
