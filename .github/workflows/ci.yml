@@ -111,7 +111,9 @@ jobs:
         continue-on-error: true 
         run: |
           /opt/Unity/${{ matrix.unity-version-matrix }}/Editor/Unity -quit -batchMode -logFile -noGraphics -returnlicense || exit 0
-
+      - name: list all files 
+        run: |
+          find .
       - name: list all files in build dir
         run: |
           find Builds/
