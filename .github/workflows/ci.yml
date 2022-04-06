@@ -16,13 +16,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      LICENSE2019: ${{ secrets.LICENSE_2019 }} #unity 2019 license from .ulf file created through manual activation https://docs.unity3d.com/Manual/ManualActivationGuide.html
-      LICENSE2020: ${{ secrets.LICENSE_2020 }}
-      LICENSE2021: ${{ secrets.LICENSE_2021 }}
-      LICENSE2022: ${{ secrets.LICENSE_2022 }}
+      UPM_PACKAGE_CREDENTIAL_UPMCONFIG_TOML: ${{ secrets.UPM_PACKAGE_CREDENTIAL_UPMCONFIG_TOML }}
     strategy:
       matrix:
-        unity-version-matrix: [ 2019.4.36f1,2020.3.30f1, 2021.2.14f1, 2022.1.0b14 ]
+        unity-version-matrix: [ 2020.3.30f1, 2021.2.14f1, 2022.1.0b14 ] #2019.4.36f1,
 
     steps:
       - name: Checkout Code
@@ -31,12 +28,20 @@ jobs:
           submodules: 'true'
 #not great, but let's also set up java so we can run sdkmanager. probably a way to avoid this.
       #https://github.com/marketplace/actions/setup-unity
+      #possible modules on linux - android,ios,webgl,linux-il2cpp,mac-mono,windows-mono 
       - name: Setup Unity
         uses: kuler90/setup-unity@v1
         with:
           unity-version: ${{ matrix.unity-version-matrix }}
           unity-modules: android
           install-path: /opt/Unity
+#need 2fa to not error out I think
+      - name: Activate Unity
+        continue-on-error: true 
+        uses: kuler90/activate-unity@v1
+        with:
+          unity-username: ${{ secrets.UNITY_USERNAME }}
+          unity-password: ${{ secrets.UNITY_PASSWORD }}
       - name: list all files in current dir
         run: |
           find .    
@@ -49,6 +54,7 @@ jobs:
           echo $NDK_HOME
           echo $JAVA_HOME
           echo ${{ matrix.unity-version-matrix }}
+          echo env UNITY_PATH: ${{ env.UNITY_PATH }}
 
 #        https://stackoverflow.com/questions/46402772/failed-to-install-android-sdk-java-lang-noclassdeffounderror-javax-xml-bind-a
       - name: accept licenses if not already done
@@ -58,59 +64,28 @@ jobs:
       - name: list all files in unity install dir
         run: |
           find /opt/Unity/
-      - name: write out license file 2019
-        if: ${{ contains(matrix.unity-version-matrix,'2019') }}
-        run: |
-          echo -n -e "$LICENSE2019" > license.alf
-          echo inside a multi-line script: $LICENSE_2019
-          wc -m license.alf
-          ls -al *alf
-      - name: write out license file 2020
-        if: ${{ contains(matrix.unity-version-matrix,'2020') }}
-        run: |
-          echo -n -e "$LICENSE2020" > license.alf
-          echo inside a multi-line script: $LICENSE2020
-          wc -m license.alf
-          ls -al *alf
-      - name: write out license file 2021
-        if: ${{ contains(matrix.unity-version-matrix,'2021') }}
-        run: |
-          echo -n -e "$LICENSE2021" > license.alf
-          echo inside a multi-line script: $LICENSE2021
-          wc -m license.alf
-          ls -al *alf
-      - name: write out license file 2022
-        if: ${{ contains(matrix.unity-version-matrix,'2022') }}
-        run: |
-          echo -n -e "$LICENSE2022" > license.alf
-          echo inside a multi-line script: $LICENSE2022
-          wc -m license.alf
-          ls -al *alf
       #- run:
       #  name: accept licenses
       #  command: |
       #    echo "y" | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
       #https://docs.unity3d.com/Manual/EditorCommandLineArguments.html
-      - name: manual license activation
-        run: |
-          /opt/Unity/${{ matrix.unity-version-matrix }}/Editor/Unity -quit -batchMode -buildTarget Android -logFile -noGraphics -manualLicenseFile license.alf || exit 0
-      - name: unity android build
-        run: |
-          /opt/Unity/${{ matrix.unity-version-matrix }}/Editor/Unity -quit -batchMode -buildTarget Android -logFile -noGraphics -executeMethod TestBuilder.Build || exit 0
-#      - name: Build Unity
-#        uses: kuler90/build-unity@v1
-#        continue-on-error: true 
-#        with:
-#          build-target: Android
-#          build-method: TestBuilder.Build
+
+      - name: Build Unity
+        uses: kuler90/build-unity@v1
+        continue-on-error: true 
+        with:
+          build-target: Android
+          build-method: TestBuilder.Build
+          project-path: ${{ github.workspace }}
 
 #return license failed - "activated manually for this computer and can't be returned"  https://github.com/hardcoded2/WavePassthroughOverlayExample/runs/5540616684?check_suite_focus=true#step:9:79
 #feels wrong not to do it... just ignore the error code i guess?
 
-      - name: return license
-        continue-on-error: true 
-        run: |
-          /opt/Unity/${{ matrix.unity-version-matrix }}/Editor/Unity -quit -batchMode -logFile -noGraphics -returnlicense || exit 0
+#not sure if needed with kuler90 plugin
+#      - name: return license
+#        continue-on-error: true 
+#        run: |
+#          /opt/Unity/${{ matrix.unity-version-matrix }}/Editor/Unity -quit -batchMode -logFile -noGraphics -returnlicense || exit 0
       - name: list all files 
         run: |
           find .
