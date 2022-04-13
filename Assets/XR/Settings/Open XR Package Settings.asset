@@ -32,7 +32,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9ba5ccf170d54478c5df33f98aabc5, type: 3}
   m_Name: VIVEFocus3Profile Android
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: VIVE Focus3 Profile
   version: 1.0.0
   featureIdInternal: com.htc.wave.openxr.feature.input.htcvivefocus3
@@ -356,6 +356,7 @@ MonoBehaviour:
   m_Name: MockDriver Standalone
   m_EditorClassIdentifier: 
   m_enabled: 0
+  <failedInitialization>k__BackingField: 0
   nameUi: Mock Driver
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.mockdriver
@@ -382,7 +383,6 @@ MonoBehaviour:
   - {fileID: 709231056135133023}
   - {fileID: 6414182966999784938}
   - {fileID: -1755206864501111171}
-  - {fileID: 4797894775782201996}
   - {fileID: -4391558670083873600}
   - {fileID: -6334657346632654658}
   - {fileID: 8996550831516077021}
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03242486774e40c4683edc65026f5c89, type: 3}
   m_Name: VIVEFocus3Feature Android
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: VIVE Focus 3 Support
   version: 1.0.0
   featureIdInternal: com.unity.openxr.feature.vivefocus3
