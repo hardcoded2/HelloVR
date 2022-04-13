@@ -1,11 +1,13 @@
 {
   "dependencies": {
-    "com.htc.upm.wave.xrsdk": {
-      "version": "4.3.0-r.5",
+    "com.htc.upm.wave.openxr": {
+      "version": "0.8.0-preview.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.management": "3.0.6"
+        "com.unity.inputsystem": "1.2.0",
+        "com.unity.xr.management": "4.0.7",
+        "com.unity.xr.openxr": "1.2.8"
       },
       "url": "https://npm-registry.vive.com"
     },
@@ -56,6 +58,15 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.inputsystem": {
+      "version": "1.2.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.learn.iet-framework": {
@@ -189,6 +200,17 @@
       "dependencies": {
         "com.unity.xr.management": "4.2.0",
         "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.openxr": {
+      "version": "1.2.8",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.management": "4.0.1",
+        "com.unity.xr.legacyinputhelpers": "2.1.2",
+        "com.unity.inputsystem": "1.0.2"
       },
       "url": "https://packages.unity.com"
     },
