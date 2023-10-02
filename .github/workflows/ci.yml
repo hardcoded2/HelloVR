@@ -26,6 +26,10 @@ jobs:
         uses: actions/checkout@v4.1.0
         with:
           submodules: 'true'
+      #install fuse manually
+      - name: Install FUSE
+        run: sudo apt install libfuse2
+#        run: sudo apt install fuse
 #not great, but let's also set up java so we can run sdkmanager. probably a way to avoid this.
       #https://github.com/marketplace/actions/setup-unity
       #possible modules on linux - android,ios,webgl,linux-il2cpp,mac-mono,windows-mono 
