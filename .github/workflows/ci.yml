@@ -38,7 +38,8 @@ jobs:
         with:
           unity-version: ${{ matrix.unity-version-matrix }}
           unity-modules: android
-          install-path: /opt/Unity
+          install-path: /mnt
+#          install-path: /opt/Unity
 #need 2fa to not error out I think
       - name: Activate Unity
         continue-on-error: true 
